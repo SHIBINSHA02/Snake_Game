@@ -1,36 +1,47 @@
-from turtle import Turtle,Screen
+import turtle
+from snake import Snake
 import time
-
-screen= Screen()
-screen.setup(600,400)
-screen.title("")
-screen.title("The Snake Game")
-screen.bgcolor("black")
-n=3
-
-sequences =[]
-length=[(0,0),(-20,0),(-40,0)]
-for n in range(3):
-    sequence=Turtle()
-    sequence.shape("square")
-    sequence.color("white")
-    sequence.goto(length[n])
-    sequences.append(sequence)
-
-# sequence.shape("square")
-# sequence.color("white")
-# sequence.goto(0,0)
-# # sequences.append(sequence)
-
-# sequence.shape("square")
-# sequence.color("white")
-# sequence.goto(-20,0)
-# # sequences.append(sequence)
-
-# sequence.shape("square")
-# sequence.color("white")
-# sequence.goto(-40,0)
-# # sequences.append(sequence)
+from food import Food
 
 
-screen.exitonclick()
+window = turtle.Screen()
+window.bgcolor("black")
+window.title("My Snake Game")
+window.setup(width=600,height=600)
+window.tracer(0)
+window.listen()
+snake=Snake()
+
+food= Food()
+
+window.onkey(snake.up,"Up")
+window.onkey(snake.down,"Down")
+window.onkey(snake.left,"Left")
+window.onkey(snake.right,"Right")
+
+game_is_on=True
+while game_is_on:
+    time.sleep(0.5)
+    window.update()
+    snake.move()
+    if snake.head.distance(food)<15:
+        food.refresh()
+        snake.extend()
+    if snake.head.xcor()<-280 or snake.head.xcor()>280 or snake.head.ycor()<-280 or snake.head.ycor()>280:
+        game_is_on=False
+    for segment in snake.segment:
+        if segment == snake.head:
+            pass
+        elif snake.head.distance(segment) < 10:
+            game_is_on = False
+           
+
+
+
+
+
+
+
+
+
+window.exitonclick()
